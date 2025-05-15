@@ -1,9 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+import cors from "cors";
+import { authRoutes } from "./Routes/authRoutes.js";
+import { taskRoutes } from "./Routes/taskRoutes.js";
 dotenv.config();
 const app = new express();
+
+// Middleware to enable CORS for all origins
+// Allows cross-origin requests to the server
+app.use(
+  cors({
+    origin: "", // Allow frontend domain
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    credentials: true, // Allow cookies & auth headers
+  })
+);
+
 // Middleware to parse incoming JSON requests
 // Ensures the server can handle JSON data in request bodies
 app.use(express.json());
@@ -22,9 +35,17 @@ app.use((req, res, next) => {
 app.listen(5100, () => {
   console.log("Server is running on port 5100");
 });
+// Route handlers for authentication-related routes
+authRoutes(app);
+
+// Route handlers for task-related routes
+taskRoutes(app);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI);
+
+// Event listener for successful database connection
+// Logs a success message when the database connection is established
 const db = mongoose.connection;
 db.on("open", () => console.log("Database connection successful"));
 db.on("error", () => console.log("Database connection not successful"));
