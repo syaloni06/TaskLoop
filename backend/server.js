@@ -11,7 +11,7 @@ const app = new express();
 // Allows cross-origin requests to the server
 app.use(
   cors({
-    origin: "https://task-loop-h155.vercel.app/login", // Allow frontend domain
+    origin: "https://task-loop-h155.vercel.app", // Allow frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     credentials: true, // Allow cookies & auth headers
   })
