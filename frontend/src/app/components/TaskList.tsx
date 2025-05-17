@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import TaskItem from './TaskItem';
+import { API_URL } from '../utils/API_URL';
 
 interface Task {
   _id: string;
@@ -24,7 +25,7 @@ export default function TaskList() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('http://localhost:5100/task');
+      const res = await axios.get(`${API_URL}/task`);
       setTasks(res.data);
     } catch (err) {
       console.error('Failed to fetch tasks', err);

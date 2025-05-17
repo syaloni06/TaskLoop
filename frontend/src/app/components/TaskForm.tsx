@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "../utils/API_URL";
 
 interface User {
   _id: string;
@@ -19,7 +20,7 @@ export default function TaskForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    axios.get("http://localhost:5100/users").then((res) => setUsers(res.data));
+    axios.get(`${API_URL}/users`).then((res) => setUsers(res.data));
   }, []);
 
   const toggleUserSelection = (userId: string) => {
@@ -41,7 +42,7 @@ export default function TaskForm() {
       createdAt: new Date().toISOString()
     };
     
-    await axios.post("http://localhost:5100/task", taskPayload);
+    await axios.post(`${API_URL}/task`, taskPayload);
     reset();
     setSelectedUsers([]);
     router.push("/tasks");

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '../services/api';
+import { API_URL } from '../utils/API_URL';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -46,7 +47,7 @@ export default function RegisterPage() {
     if (nameValidation || emailValidation || passwordValidation) return;
 
     try {
-      await api.post('http://localhost:5100/register', { name, email, password });
+      await api.post(`${API_URL}/register`, { name, email, password });
       alert('Registered successfully');
       router.push('/login');
     } catch (err) {

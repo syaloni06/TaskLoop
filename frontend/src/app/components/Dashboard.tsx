@@ -12,6 +12,7 @@ import {
   LinearScale,
   BarElement,
 } from 'chart.js';
+import { API_URL } from '../utils/API_URL';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
@@ -35,7 +36,7 @@ export default function Dashboard() {
     setUserId(id);
 
     axios
-      .post('http://localhost:5100/dashboard', { userId: id })
+      .post(`${API_URL}/dashboard`, { userId: id })
       .then((res) => {
         setAssignedTasks(res.data.assigned || []);
         setCreatedTasks(res.data.created || []);

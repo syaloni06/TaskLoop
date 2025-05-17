@@ -5,6 +5,7 @@ import api from "../../services/api";
 import { Task, User } from "../../types/index";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
+import { API_URL } from "@/app/utils/API_URL";
 
 export default function TaskDetailPage() {
   const router = useRouter();
@@ -24,8 +25,8 @@ export default function TaskDetailPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const taskRes = await api.get(`http://localhost:5100/task/${id}`);
-        const usersRes = await api.get(`http://localhost:5100/users`);
+        const taskRes = await api.get(`${API_URL}/task/${id}`);
+        const usersRes = await api.get(`${API_URL}/users`);
         const taskData = taskRes.data;
 
         setTask(taskData);

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '../services/api';
+import { API_URL } from '../utils/API_URL';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export default function LoginPage() {
     if (emailValidation || passwordValidation) return;
 
     try {
-      const res = await api.post('http://localhost:5100/login', { email, password });
+      const res = await api.post(`${API_URL}/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userId', res.data.user._id);
       localStorage.setItem('name', res.data.user.name);
