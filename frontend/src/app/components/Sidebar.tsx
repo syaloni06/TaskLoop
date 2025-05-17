@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import Image from 'next/image';
-import { LayoutDashboard, ClipboardList, PlusSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, ClipboardList, PlusSquare, LogOut} from 'lucide-react';
 import { useState } from 'react';
 
 const navItems = [
@@ -28,21 +27,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed bottom-0 lg:top-16 lg:left-0 lg:h-screen w-64 bg-white py-6 shadow-md hidden md:flex flex-col">
+    <aside className="fixed bottom-0 top-16 left-0 h-screen w-64 bg-white py-6 shadow-md hidden md:flex flex-col">
       {/* Profile */}
       <div className="text-center mb-10">
-        <Image
-          src="/avatar.jpg"
-          alt="User Avatar"
-          width={80}
-          height={80}
-          className="rounded-full mx-auto"
-        />
-        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full inline-block mt-2">
-          Admin
-        </span>
-        <p className="mt-2 font-semibold">Mike</p>
-        <p className="text-sm text-gray-500">mike@timetoprogram.com</p>
+        <p className="mt-2 font-semibold">{localStorage.getItem("name")}</p>
+        <p className="text-sm text-gray-500">{localStorage.getItem("email")}</p>
       </div>
 
       {/* Navigation */}

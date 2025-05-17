@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface User {
   _id: string;
@@ -16,7 +17,7 @@ export default function TaskForm() {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     axios.get("http://localhost:5100/users").then((res) => setUsers(res.data));
   }, []);
@@ -43,6 +44,7 @@ export default function TaskForm() {
     await axios.post("http://localhost:5100/task", taskPayload);
     reset();
     setSelectedUsers([]);
+    router.push("/tasks");
   };
 
   return (

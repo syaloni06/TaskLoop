@@ -11,3 +11,8 @@ export interface Task {
   createdBy: any;
   assignedTo: any[];
 }
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+}
