@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const withNetlify = require('@netlify/next');
+import type { NextConfig } from "next";
 
-module.exports = withNetlify({
-  reactStrictMode: true,
-});
+const nextConfig: NextConfig = {
+  /* config options here zz*/
+};
+
+export default nextConfig;
