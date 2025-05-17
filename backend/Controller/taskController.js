@@ -1,9 +1,14 @@
-import taskModel from "../Model/task.js"
+import taskModel from "../Model/task.js";
+import mongoose from "mongoose";
 
 // Function to create a new task
 export const createTask = async (req, res) => {
   try {
-    const { title, description, dueDate, priority, status, assignedTo } = req.body;
+    const { title, description, dueDate, priority, status, assignedTo, createdBy } = req.body;
+
+    if (!Array.isArray(assignedTo)) {
+      return res.status(400).json({ message: "assignedTo must be an array of user IDs" });
+    }
 
     const task = new taskModel({
       title,
@@ -12,45 +17,57 @@ export const createTask = async (req, res) => {
       priority,
       status,
       assignedTo,
-      createdBy: req.user.id,
+      createdBy,
     });
 
     await task.save(); // Save the new task
     res.status(201).json({ message: "Task created successfully", task });
   } catch (error) {
-    res.status(500).json({ message: error.message }); // Handle server error
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Function to get all tasks for a user
+// Function to get all tasks
 export const getTasks = async (req, res) => {
   try {
-    const { search, status, priority, dueDate } = req.query;
+    const tasks = await taskModel.find().populate("createdBy assignedTo", "name email");
 
-    let query = {
-      $or: [{ createdBy: req.user.id }, { assignedTo: req.user.id }],
-    };
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    if (search) {
-      query.$and = [
-        {
-          $or: [
-            { title: { $regex: search, $options: "i" } },
-            { description: { $regex: search, $options: "i" } },
-          ],
-        },
-      ];
+// Function to get dashboard-related tasks
+export const getDashboardTasks = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
     }
 
-    if (status) query.status = status;
-    if (priority) query.priority = priority;
-    if (dueDate) query.dueDate = { $lte: new Date(dueDate) };
+    const now = new Date();
 
-    const tasks = await taskModel.find(query).populate("createdBy assignedTo", "name email");
+    const [createdTasks, assignedTasks, overdueTasks] = await Promise.all([
+      taskModel.find({ createdBy: userId }),
+      taskModel.find({ assignedTo: userId }),
+      taskModel.find({
+        assignedTo: userId,
+        dueDate: { $lt: now },
+        status: { $ne: 'Completed' }, // fixed status case sensitivity
+      }),
+    ]);
 
-    res.status(200).json(tasks); // Return list of tasks
+    res.status(200).json({
+      created: createdTasks,
+      assigned: assignedTasks,
+      overdue: overdueTasks,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message }); // Handle server error
+    console.error('Dashboard fetch error:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -62,12 +79,12 @@ export const getTaskById = async (req, res) => {
     const task = await taskModel.findById(id).populate("createdBy assignedTo", "name email");
 
     if (!task) {
-      return res.status(404).json({ message: "Task not found" }); // Handle not found
+      return res.status(404).json({ message: "Task not found" });
     }
 
-    res.status(200).json(task); // Return the found task
+    res.status(200).json(task);
   } catch (error) {
-    res.status(500).json({ message: error.message }); // Handle server error
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -77,15 +94,19 @@ export const updateTask = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
 
+    if (updates.assignedTo && !Array.isArray(updates.assignedTo)) {
+      return res.status(400).json({ message: "assignedTo must be an array of user IDs" });
+    }
+
     const task = await taskModel.findByIdAndUpdate(id, updates, { new: true });
 
     if (!task) {
-      return res.status(404).json({ message: "Task not found" }); // Handle not found
+      return res.status(404).json({ message: "Task not found" });
     }
 
     res.status(200).json({ message: "Task updated successfully", task });
   } catch (error) {
-    res.status(500).json({ message: error.message }); // Handle server error
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -97,11 +118,11 @@ export const deleteTask = async (req, res) => {
     const task = await taskModel.findByIdAndDelete(id);
 
     if (!task) {
-      return res.status(404).json({ message: "Task not found" }); // Handle not found
+      return res.status(404).json({ message: "Task not found" });
     }
 
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message }); // Handle server error
+    res.status(500).json({ message: error.message });
   }
 };

@@ -61,3 +61,16 @@ export const loginUser = async (req, res) => {
   }
 };
 
+// Function to get all users excluding their password
+export const getAllUsers = async (req, res) => {
+  try {
+    // Find all users, exclude the password field
+    const users = await userModel.find({}, { password: 0 });
+
+    // Send the users in the response
+    res.status(200).json(users);
+  } catch (err) {
+    // Handle any errors
+    res.status(500).json({ message: err.message });
+  }
+};

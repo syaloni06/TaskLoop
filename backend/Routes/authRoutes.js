@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from "../Controller/authController.js";
+import { registerUser, loginUser, getAllUsers } from "../Controller/authController.js";
 
 // Function to define authentication-related routes
 export const authRoutes = (app) => {
@@ -8,4 +8,5 @@ export const authRoutes = (app) => {
   // Route to handle user login
   app.post('/login', loginUser);
 
+  app.get("/users", getAllUsers);
 };

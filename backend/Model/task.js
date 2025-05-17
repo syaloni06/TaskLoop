@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-  title:{
+  title: {
     type: String,
     required: true,
   },
@@ -30,18 +30,19 @@ const taskSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  assignedTo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  assignedTo: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
     required: true,
   },
 });
-// Create a User model using the schema
+
 const taskModel = mongoose.model("Task", taskSchema);
 
-// Export the User model to be used in other parts of the application
 export default taskModel;
