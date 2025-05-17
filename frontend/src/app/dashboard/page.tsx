@@ -1,10 +1,11 @@
 'use client';
 import Dashboard from '../components/Dashboard';
+import useAuth from '../hooks/useAuth';
 
 export default function DashboardPage() {
+  useAuth();
   return (
     <div className="mt-8">
-      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
       <Dashboard />
     </div>
   );

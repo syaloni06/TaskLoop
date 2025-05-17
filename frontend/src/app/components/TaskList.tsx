@@ -11,16 +11,16 @@ interface Task {
   dueDate: string;
   priority: string;
   status: string;
-  assignedTo: string;
+  assignedTo: [];
   createdBy: string;
 }
 
-export default function TaskList({ reload }: { reload: boolean }) {
+export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('/api/tasks');
+      const res = await axios.get('http://localhost:5100/task');
       setTasks(res.data);
     } catch (err) {
       console.error('Failed to fetch tasks', err);
@@ -29,13 +29,16 @@ export default function TaskList({ reload }: { reload: boolean }) {
 
   useEffect(() => {
     fetchTasks();
-  }, [reload]); // Re-fetch when reload value changes
+  }, []); // Re-fetch when reload value changes
 
-  return (
-    <div className="space-y-4">
-      {tasks.map((task) => (
-        <TaskItem key={task._id} task={task} />
-      ))}
-    </div>
-  );
+
+
+return (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pl-72">
+    {tasks.map((task) => (
+      <TaskItem key={task._id} task={task} />
+    ))}
+  </div>
+);
+
 }

@@ -15,6 +15,7 @@ export default function HomePage() {
   return (
     <div className="text-center mt-20">
       <h1 className="text-3xl font-bold">Redirecting...</h1>
+      <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }

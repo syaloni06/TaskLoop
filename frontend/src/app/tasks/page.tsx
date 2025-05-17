@@ -1,16 +1,15 @@
 'use client';
-import { useState } from 'react';
 import TaskList from '../components/TaskList';
-import TaskForm from '../components/TaskForm';
+import useAuth from '../hooks/useAuth';
+
 
 export default function TasksPage() {
-  const [reload, setReload] = useState(false);
-
+  const isLoading = useAuth();
+  if (isLoading) return null; 
   return (
     <div className="mt-8">
       <h1 className="text-3xl font-bold mb-4">All Tasks</h1>
-      <TaskForm onSuccess={() => setReload(!reload)} />
-      <TaskList reload={reload} />
+      <TaskList />
     </div>
   );
 }

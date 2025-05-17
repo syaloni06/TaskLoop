@@ -13,6 +13,7 @@ export default function LoginPage() {
     try {
       const res = await api.post('http://localhost:5100/login', { email, password });
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userId', res.data.user._id);
       router.push('/dashboard');
     } catch (err) {
       console.log(err);

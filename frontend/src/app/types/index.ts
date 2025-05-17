@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // types/index.ts
 
 export interface Task {
@@ -5,8 +6,8 @@ export interface Task {
   title: string;
   description: string;
   dueDate: string;
-  priority: 'low' | 'medium' | 'high';
-  status: 'pending' | 'in-progress' | 'completed';
-  createdBy: string;
-  assignedTo: string;
+  priority: 'Low' | 'Medium' | 'High';
+  status: 'Pending' | 'In-progress' | 'Completed';
+  createdBy: any;
+  assignedTo: any[];
 }

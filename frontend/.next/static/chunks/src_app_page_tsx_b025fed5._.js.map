@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/USER/OneDrive/Desktop/TaskLoop/frontend/src/app/page.tsx"],"sourcesContent":["// app/page.tsx\n'use client';\nimport { useEffect } from 'react';\nimport { useRouter } from 'next/navigation';\n\nexport default function HomePage() {\n  const router = useRouter();\n\n  useEffect(() => {\n    // Redirect to login or dashboard based on token\n    const token = localStorage.getItem('token');\n    router.push(token ? '/dashboard' : '/login');\n  }, [router]);\n\n  return (\n    <div className=\"text-center mt-20\">\n      <h1 className=\"text-3xl font-bold\">Redirecting...</h1>\n      <div className=\"w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin\" />\n    </div>\n  );\n}\n"],"names":[],"mappings":"AAAA,eAAe;;;;;AAEf;AACA;;;AAFA;;;AAIe,SAAS;;IACtB,MAAM,SAAS,CAAA,GAAA,qIAAA,CAAA,YAAS,AAAD;IAEvB,CAAA,GAAA,6JAAA,CAAA,YAAS,AAAD;8BAAE;YACR,gDAAgD;YAChD,MAAM,QAAQ,aAAa,OAAO,CAAC;YACnC,OAAO,IAAI,CAAC,QAAQ,eAAe;QACrC;6BAAG;QAAC;KAAO;IAEX,qBACE,6LAAC;QAAI,WAAU;;0BACb,6LAAC;gBAAG,WAAU;0BAAqB;;;;;;0BACnC,6LAAC;gBAAI,WAAU;;;;;;;;;;;;AAGrB;GAfwB;;QACP,qIAAA,CAAA,YAAS;;;KADF","debugId":null}}]
+}
